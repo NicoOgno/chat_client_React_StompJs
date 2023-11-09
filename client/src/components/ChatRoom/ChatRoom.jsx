@@ -1,14 +1,14 @@
-import styles from './chatRoom.module.css'
+import styles from './chatRoom.module.css';
 import React, { useState, useEffect } from 'react';
 import { Client } from '@stomp/stompjs';
 
 function ChatRoom() {
   const [stompClient, setStompClient] = useState(null);
   const [connected, setConnected] = useState(false);
-  const [room, setRoom] = useState('');
+  const [room, setRoom] = useState(''); // Sala actual
   const [user, setUser] = useState('');
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState({}); // Mensajes se mantendrán aquí
 
   useEffect(() => {
     const stomp = new Client({
@@ -18,9 +18,8 @@ function ChatRoom() {
     stomp.onConnect = (frame) => {
       setConnected(true);
       console.log('Connected: ' + frame);
-      stomp.subscribe('/topic/' + room, (message) => {
-        showMessage(JSON.parse(message.body).content);
-      });
+
+      // No es necesario crear un nuevo arreglo de mensajes aquí
     };
 
     stomp.onWebSocketError = (error) => {
@@ -41,6 +40,14 @@ function ChatRoom() {
 
   const connect = () => {
     stompClient.activate();
+    // Suscríbete a la sala actual
+    stompClient.onConnect = (frame) => {
+      setConnected(true);
+      console.log('Connected: ' + frame);
+      stompClient.subscribe('/topic/' + room, (message) => {
+        showMessage(JSON.parse(message.body).content, room);
+      });
+    };
   };
 
   const disconnect = () => {
@@ -50,6 +57,7 @@ function ChatRoom() {
   };
 
   const sendMessage = () => {
+    if (connected) {
     stompClient.publish({
       destination: '/app/chat/' + room,
       body: JSON.stringify({
@@ -57,10 +65,16 @@ function ChatRoom() {
         user: user,
       }),
     });
+  } else {
+    console.error("No hay una conexión STOMP establecida.");
+  }
   };
 
-  const showMessage = (message) => {
-    setMessages([...messages, message]);
+  const showMessage = (message, room) => {
+    setMessages((prevMessages) => ({
+      ...prevMessages,
+      [room]: [...(prevMessages[room] || []), message],
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -73,18 +87,23 @@ function ChatRoom() {
       <div className={styles.chatBox}>
         <h2>Messages</h2>
         <ul>
-          {messages.map((message, index) => (
-            <li key={index}>{message}</li>
-          ))}
+          {messages[room] &&
+            messages[room].map((message, index) => (
+              <li key={index}>{message}</li>
+            ))}
         </ul>
       </div>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Room"
-          value={room}
-          onChange={(e) => setRoom(e.target.value)}
-        />
+        <div>
+          <select
+            value={room}
+            onChange={(e) => setRoom(e.target.value)}
+          >
+            <option value="">Select a room</option>
+            <option value="room1">Room 1</option>
+            <option value="room2">Room 2</option>
+          </select>
+        </div>
         <input
           type="text"
           placeholder="User"
