@@ -26,7 +26,7 @@ To see live version go to: http:...
 
 3. <p>To run the app execute command: <b>npm run dev</b></p>
 
-<p>The app will be running in port: <b>localhost:5173</b></p>
+<p>The app will be running on port: <b>localhost:5173</b></p>
 
 
 
