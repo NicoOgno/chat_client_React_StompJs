@@ -1,4 +1,5 @@
 import styles from './chatRoom.module.css'
+import { Client } from '@stomp/stompjs';
 
 function ChatRoom() {
   
