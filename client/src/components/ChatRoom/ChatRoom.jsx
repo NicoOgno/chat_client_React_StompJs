@@ -1,29 +1,33 @@
-import styles from './chatRoom.module.css';
 import React, { useState, useEffect } from 'react';
 import { Client } from '@stomp/stompjs';
+import styles from './chatRoom.module.css';
 
 function ChatRoom() {
-  const [stompClient, setStompClient] = useState(null);
-  const [connected, setConnected] = useState(false);
+  // Estados para el componente
+  const [stompClient, setStompClient] = useState(null); // Cliente STOMP
+  const [connected, setConnected] = useState(false); // Indica si el usuario está conectado
   const [room, setRoom] = useState(''); // Sala actual
-  const [user, setUser] = useState('');
-  const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState({}); // Mensajes se mantendrán aquí
+  const [user, setUser] = useState(''); // Nombre de usuario
+  const [message, setMessage] = useState(''); // Mensaje a enviar
+  const [messages, setMessages] = useState({}); // Almacena los mensajes por sala
 
+  // Efecto para la inicialización del cliente STOMP
   useEffect(() => {
+    // Crea una instancia del cliente STOMP
     const stomp = new Client({
-      brokerURL: 'ws://localhost:8080/chat-websocket-service',
+      brokerURL: 'ws://localhost:8080/chat-websocket-service', // URL del servidor WebSocket
     });
 
+    // Configura manejadores de eventos para el cliente STOMP
     stomp.onConnect = (frame) => {
-      setConnected(true);
+      setConnected(true); // Establece la conexión como exitosa
       console.log('Connected: ' + frame);
 
       // No es necesario crear un nuevo arreglo de mensajes aquí
     };
 
     stomp.onWebSocketError = (error) => {
-      console.error('Error with websocket', error);
+      console.error('Error with WebSocket', error);
     };
 
     stomp.onStompError = (frame) => {
@@ -31,16 +35,19 @@ function ChatRoom() {
       console.error('Additional details: ' + frame.body);
     };
 
+    // Almacena la instancia del cliente STOMP en el estado
     setStompClient(stomp);
 
+    // Limpieza al desmontar el componente
     return () => {
       stomp.deactivate();
     };
   }, [room]);
 
+  // Función para conectarse a la sala
   const connect = () => {
     stompClient.activate();
-    // Suscríbete a la sala actual
+    // Suscríbete a la sala actual cuando se conecte
     stompClient.onConnect = (frame) => {
       setConnected(true);
       console.log('Connected: ' + frame);
@@ -50,26 +57,29 @@ function ChatRoom() {
     };
   };
 
+  // Función para desconectarse
   const disconnect = () => {
     stompClient.deactivate();
     setConnected(false);
     console.log('Disconnected');
   };
 
+  // Función para enviar un mensaje
   const sendMessage = () => {
     if (connected) {
-    stompClient.publish({
-      destination: '/app/chat/' + room,
-      body: JSON.stringify({
-        content: message,
-        user: user,
-      }),
-    });
-  } else {
-    console.error("No hay una conexión STOMP establecida.");
-  }
+      stompClient.publish({
+        destination: '/app/chat/' + room,
+        body: JSON.stringify({
+          content: message,
+          user: user,
+        }),
+      });
+    } else {
+      console.error("No hay una conexión STOMP establecida.");
+    }
   };
 
+  // Función para mostrar un mensaje y agregarlo al estado
   const showMessage = (message, room) => {
     setMessages((prevMessages) => ({
       ...prevMessages,
@@ -77,10 +87,12 @@ function ChatRoom() {
     }));
   };
 
+  // Función para manejar el envío de formulario (puede dejarse vacía)
   const handleSubmit = (e) => {
     e.preventDefault();
   };
 
+  // Renderizado del componente
   return (
     <div className={styles.chatContainer}>
       <h1 className={styles.chatTitle}>Chat</h1>
@@ -102,6 +114,7 @@ function ChatRoom() {
             <option value="">Select a room</option>
             <option value="room1">Room 1</option>
             <option value="room2">Room 2</option>
+            {/* Agrega opciones para todas las salas disponibles */}
           </select>
         </div>
         <input

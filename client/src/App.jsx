@@ -1,10 +1,12 @@
+import ChatRoom from './components/ChatRoom/ChatRoom'
 import './App.css'
+
 
 function App() {
 
   return (
     <>
-      App
+      <ChatRoom />
     </>
   )
 }
