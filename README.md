@@ -10,7 +10,7 @@ To see live version go to: http:...
 
 #### JAVA Config
 
-<p>First clone the JAVA repository http:...</p>
+<p>First clone the JAVA repository https://github.com/daniel-training/chat-proto</p>
 
 <p>Be sure to have an IDE to run JAVA</p>
 
