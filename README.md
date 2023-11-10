@@ -10,7 +10,7 @@ To see live version go to: http:...
 
 #### JAVA Config
 
-<p>First clone the JAVA repository https://github.com/daniel-training/chat-proto</p>
+<p>First clone the JAVA repository <b>https://github.com/daniel-training/chat-cifo-java-2023</b></p>
 
 <p>Be sure to have an IDE to run JAVA</p>
 
@@ -24,7 +24,7 @@ To see live version go to: http:...
 
 2. <p>In client folder run: <b>npm install</b></p>
 
-3. <p>To run the app execute command: <b>npm run dev</b></p>
+3. <p>To run the app in client folder execute command: <b>npm run dev</b></p>
 
 <p>The app will be running on port: <b>localhost:5173</b></p>
 
