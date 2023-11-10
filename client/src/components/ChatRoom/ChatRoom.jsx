@@ -112,9 +112,11 @@ function ChatRoom() {
             onChange={(e) => setRoom(e.target.value)}
           >
             <option value="">Select a room</option>
-            <option value="room1">Room 1</option>
-            <option value="room2">Room 2</option>
-            {/* Agrega opciones para todas las salas disponibles */}
+            <option value="room1">Code</option>
+            <option value="room2">Sports</option>
+            <option value="room2">Cooking</option>
+            <option value="room2">Nature</option>
+            {/* Crear arreglo y renderizar salas */}
           </select>
         </div>
         <input
