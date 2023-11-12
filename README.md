@@ -28,6 +28,9 @@ To see live version go to: http:...
 
 <p>The app will be running on port: <b>localhost:5173</b></p>
 
+<p>To chat and send messages first select a room from the dropdown list, then enter a username and click connect, and you'll be ready to chat!</p>
+
+
 
 
 
