@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Client } from '@stomp/stompjs';
 import styles from './chatRoom.module.css';
 
+
 function ChatRoom() {
   // Estados para el componente
   const [stompClient, setStompClient] = useState(null); // Cliente STOMP
@@ -51,6 +52,7 @@ function ChatRoom() {
     stompClient.onConnect = (frame) => {
       setConnected(true);
       console.log('Connected: ' + frame);
+
       stompClient.subscribe('/topic/' + room, (message) => {
         showMessage(JSON.parse(message.body).content, room);
       });
@@ -74,6 +76,7 @@ function ChatRoom() {
           user: user,
         }),
       });
+      setMessage(""); // Elimina el texto del mensaje luego de enviar el mensaje
     } else {
       console.error("No hay una conexión STOMP establecida.");
     }
