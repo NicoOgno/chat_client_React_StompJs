@@ -1,10 +1,10 @@
 .chatContainer {
-    /* display: flex; */
-    /* justify-self: center; */
     border: solid green 3px;
+    border-color: red green blue yellow; /* red top, green right, blue bottom and yellow left */
+    border-radius: 20px;
     margin: 5%;
     max-width: 500px;
-    /* margin-left: 800px; */
+    margin-left: 20%
 
 }
 
@@ -12,12 +12,21 @@
     display: flex;
     justify-content: center;
     border: solid blue 3px;
+    /* border-radius: 80px 80px 30px 30px; */
+    /* border-radius: 30% 20% 10% 30%; */
+    border-top-left-radius: 3% 30%;
+    border-top-right-radius: 3% 30%;
+    border-bottom-right-radius: 5% 20%;
+    border-bottom-left-radius: 5% 20%;
+    border-style:outset;
+    
+
 }
 
 .chatBox {
     display: flex;
-    justify-content: end;
-    align-self: flex-start;
     height: 50vh;
     border: solid red 3px;
+    /* border-radius: 10% 10% / 10% 10%; */
+    border-radius: 5%;
 }

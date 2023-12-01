@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Client } from '@stomp/stompjs';
 import styles from './chatRoom.module.css';
+import Buttons from '../Buttons/Buttons';
 
 
 function ChatRoom() {
@@ -15,9 +16,10 @@ function ChatRoom() {
   // Efecto para la inicialización del cliente STOMP
   useEffect(() => {
     // Crea una instancia del cliente STOMP
-    const stomp = new Client({
-      brokerURL: 'ws://localhost:8080/chat-websocket-service', // URL del servidor WebSocket
-    });
+    if (!stompClient) {
+      const stomp = new Client({
+        brokerURL: 'ws://localhost:8080/chat-websocket-service', // URL del servidor WebSocket
+      });
 
     // Configura manejadores de eventos para el cliente STOMP
     stomp.onConnect = (frame) => {
@@ -38,11 +40,13 @@ function ChatRoom() {
 
     // Almacena la instancia del cliente STOMP en el estado
     setStompClient(stomp);
-
+  
+    
     // Limpieza al desmontar el componente
     return () => {
       stomp.deactivate();
     };
+  }
   }, [room]);
 
   // Función para conectarse a la sala
@@ -52,7 +56,6 @@ function ChatRoom() {
     stompClient.onConnect = (frame) => {
       setConnected(true);
       console.log('Connected: ' + frame);
-
       stompClient.subscribe('/topic/' + room, (message) => {
         showMessage(JSON.parse(message.body).content, room);
       });
@@ -68,6 +71,7 @@ function ChatRoom() {
 
   // Función para enviar un mensaje
   const sendMessage = () => {
+    console.log('este es el connected: ', connected);
     if (connected) {
       stompClient.publish({
         destination: '/app/chat/' + room,
@@ -97,8 +101,10 @@ function ChatRoom() {
 
   // Renderizado del componente
   return (
+    <>
+    <Buttons connect={connect} disconnect={disconnect} setRoom={setRoom} room={room} user={user} connected={connected} setUser={setUser} />
     <div className={styles.chatContainer}>
-      <h1 className={styles.chatTitle}>Chat</h1>
+      <h1 className={styles.chatTitle}>User: {user} :: ChatRoom: {room} </h1>
       <div className={styles.chatBox}>
         <ul>
           {messages[room] &&
@@ -108,42 +114,18 @@ function ChatRoom() {
         </ul>
       </div>
       <form onSubmit={handleSubmit}>
-        <div>
-          <select
-            value={room}
-            onChange={(e) => setRoom(e.target.value)}
-          >{/*Dar un value a Select a room para que sea la sala inicial por default*/}
-            <option value="">Select a room</option>
-            <option value="1">Code</option>
-            <option value="2">Sports</option>
-            <option value="3">Cooking</option>
-            <option value="4">Nature</option>
-            {/* Crear arreglo y renderizar salas */}
-          </select>
-        </div>
-        <input
-          type="text"
-          placeholder="User"
-          value={user}
-          onChange={(e) => setUser(e.target.value)}
-        />
         <input
           type="text"
           placeholder="Message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <button onClick={connect} disabled={connected}>
-          Connect
-        </button>
-        <button onClick={disconnect} disabled={!connected}>
-          Disconnect
-        </button>
         <button onClick={sendMessage} disabled={!connected}>
           Send
         </button>
       </form>
     </div>
+    </>
   );
 }
 
