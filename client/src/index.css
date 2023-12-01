@@ -1,1 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* || VARIABLES */
+
+:root {
+  /* COLORS */
+  --BGCOLOR: #0f172a;
+  --BORDER-COLOR: #fff;
+  --COLOR: #fff;
+  --ERROR: firebrick;
+  --INACTIVE: lightgray;
+  --LINK-COLOR: whitesmoke;
+  --LINK-HOVER: rgba(245, 245, 245, 0.9);
+  --NOTE-BGCOLOR: hsla(240, 64%, 27%, 0.65);
+  --STATUS-COMPLETE: limegreen;
+  --STATUS-OPEN: firebrick;
+  --TABLE-BGCOLOR: #fff;
+  --TABLE-COLOR: #000;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+/* || GENERAL STYLES */
+
+body {
+  font-family: 'Nunito', sans-serif;
+  min-height: 100vh;
+  background-color: var(--BGCOLOR);
+  color: var(--COLOR);
+  /* https://png.pngtree.com/thumb_back/fh260/background/20221008/pngtree-3d-illustration-background-wallpaper-of-a-temple-corridor-with-scifi-lighting-effects-photo-image_28418148.jpg */
+  background-image: url('https://freerangestock.com/sample/121483/nice-glowing-space-tunnel-background-wallpaper-3d-rendering.jpg');
+  background-size: cover;
+  background-position: top right;
+  background-blend-mode: multiply;
+}
+
+:link {
+    text-decoration: none;
+}
