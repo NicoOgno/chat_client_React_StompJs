@@ -9,10 +9,11 @@ function ChatRoom() {
   const [stompClient, setStompClient] = useState(null); // Cliente STOMP
   const [connected, setConnected] = useState(false); // Indica si el usuario está conectado
   const [room, setRoom] = useState(''); // Sala actual
+  const [roomsSuscribed, setRoomsSuscribed] = useState([]); // Salas a las que está suscrito
   const [user, setUser] = useState(''); // Nombre de usuario
   const [message, setMessage] = useState(''); // Mensaje a enviar
   const [messages, setMessages] = useState({}); // Almacena los mensajes por sala
-
+  
   // Efecto para la inicialización del cliente STOMP
   useEffect(() => {
     // Crea una instancia del cliente STOMP
@@ -25,8 +26,6 @@ function ChatRoom() {
     stomp.onConnect = (frame) => {
       setConnected(true); // Establece la conexión como exitosa
       console.log('Connected: ' + frame);
-
-      // No es necesario crear un nuevo arreglo de mensajes aquí
     };
 
     stomp.onWebSocketError = (error) => {
@@ -40,25 +39,20 @@ function ChatRoom() {
 
     // Almacena la instancia del cliente STOMP en el estado
     setStompClient(stomp);
-  
     
-    // Limpieza al desmontar el componente
-    return () => {
-      stomp.deactivate();
-    };
+    // Limpieza al desmontar el componente (Tiraba error)
+    // return () => {
+    //   stomp.deactivate();
+    // };
   }
   }, [room]);
 
-  // Función para conectarse a la sala
+  // Función para conectarse
   const connect = () => {
     stompClient.activate();
-    // Suscríbete a la sala actual cuando se conecte
     stompClient.onConnect = (frame) => {
       setConnected(true);
       console.log('Connected: ' + frame);
-      stompClient.subscribe('/topic/' + room, (message) => {
-        showMessage(JSON.parse(message.body).content, room);
-      });
     };
   };
 
@@ -71,7 +65,6 @@ function ChatRoom() {
 
   // Función para enviar un mensaje
   const sendMessage = () => {
-    console.log('este es el connected: ', connected);
     if (connected) {
       stompClient.publish({
         destination: '/app/chat/' + room,
@@ -94,7 +87,18 @@ function ChatRoom() {
     }));
   };
 
-  // Función para manejar el envío de formulario (puede dejarse vacía)
+  // Función para seleccionar sala
+  const selectChatRoom = (room) => {
+    if (!roomsSuscribed.includes(room)) { // Condicional para evitar multiple suscripción a la misma sala
+      setRoomsSuscribed([...roomsSuscribed, room])
+      stompClient.subscribe('/topic/' + room, (message) => {
+        showMessage(JSON.parse(message.body).content, room);
+      });
+    }
+    setRoom(room);
+  }
+
+  // Función para manejar el envío de formulario
   const handleSubmit = (e) => {
     e.preventDefault();
   };
@@ -102,7 +106,7 @@ function ChatRoom() {
   // Renderizado del componente
   return (
     <>
-    <Buttons connect={connect} disconnect={disconnect} setRoom={setRoom} room={room} user={user} connected={connected} setUser={setUser} />
+    <Buttons connect={connect} disconnect={disconnect} setRoom={selectChatRoom} room={room} user={user} connected={connected} setUser={setUser} />
     <div className={styles.chatContainer}>
       <h1 className={styles.chatTitle}>User: {user} :: ChatRoom: {room} </h1>
       <div className={styles.chatBox}>
