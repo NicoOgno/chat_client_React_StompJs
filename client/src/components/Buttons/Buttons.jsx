@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Buttons = ({ connect, disconnect, setRoom, room, user, connected, setUser}) => {
+const Buttons = ({ connect, disconnect, selectChatRoom, user, connected, setUser}) => {
 
       const handleSubmit = (e) => {
         e.preventDefault();
@@ -10,10 +10,10 @@ const Buttons = ({ connect, disconnect, setRoom, room, user, connected, setUser}
   return (
     <>
       <div className="rooms-button-container">
-          <button className="room-buttons"  onClick={() => setRoom('Code') } >Code</button>
-          <button className="room-buttons"  onClick={() => setRoom('Cooking') } >Cooking</button>
-          <button className="room-buttons"  onClick={() => setRoom('Sports') } >Sports</button> 
-          <button className="room-buttons"  onClick={() => setRoom('Nature') } >Nature</button>
+          <button className="room-buttons"  onClick={() => selectChatRoom('Code') } >Code</button>
+          <button className="room-buttons"  onClick={() => selectChatRoom('Cooking') } >Cooking</button>
+          <button className="room-buttons"  onClick={() => selectChatRoom('Sports') } >Sports</button> 
+          <button className="room-buttons"  onClick={() => selectChatRoom('Nature') } >Nature</button>
       </div>
       <form onSubmit={handleSubmit}>
           <input

@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Client } from '@stomp/stompjs';
-import styles from './chatRoom.module.css';
-import Buttons from '../Buttons/Buttons';
+import RoomButtons from '../RoomButtons/RoomButtons';
+import MessageDisplay from '../MessageDisplay/MessageDisplay';
 
 
-function ChatRoom() {
+function ChatRoom({ user }) {
   // Estados para el componente
   const [stompClient, setStompClient] = useState(null); // Cliente STOMP
   const [connected, setConnected] = useState(false); // Indica si el usuario está conectado
   const [room, setRoom] = useState(''); // Sala actual
   const [roomsSuscribed, setRoomsSuscribed] = useState([]); // Salas a las que está suscrito
-  const [user, setUser] = useState(''); // Nombre de usuario
   const [message, setMessage] = useState(''); // Mensaje a enviar
   const [messages, setMessages] = useState({}); // Almacena los mensajes por sala
   
@@ -39,29 +38,9 @@ function ChatRoom() {
 
     // Almacena la instancia del cliente STOMP en el estado
     setStompClient(stomp);
-    
-    // Limpieza al desmontar el componente (Tiraba error)
-    // return () => {
-    //   stomp.deactivate();
-    // };
+    stomp.activate();
   }
   }, [room]);
-
-  // Función para conectarse
-  const connect = () => {
-    stompClient.activate();
-    stompClient.onConnect = (frame) => {
-      setConnected(true);
-      console.log('Connected: ' + frame);
-    };
-  };
-
-  // Función para desconectarse
-  const disconnect = () => {
-    stompClient.deactivate();
-    setConnected(false);
-    console.log('Disconnected');
-  };
 
   // Función para enviar un mensaje
   const sendMessage = () => {
@@ -98,37 +77,13 @@ function ChatRoom() {
     setRoom(room);
   }
 
-  // Función para manejar el envío de formulario
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-
   // Renderizado del componente
   return (
     <>
-    <Buttons connect={connect} disconnect={disconnect} setRoom={selectChatRoom} room={room} user={user} connected={connected} setUser={setUser} />
-    <div className={styles.chatContainer}>
-      <h1 className={styles.chatTitle}>User: {user} :: ChatRoom: {room} </h1>
-      <div className={styles.chatBox}>
-        <ul>
-          {messages[room] &&
-            messages[room].map((message, index) => (
-              <li key={index}>{message}</li>
-            ))}
-        </ul>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Message"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
-        <button onClick={sendMessage} disabled={!connected}>
-          Send
-        </button>
-      </form>
-    </div>
+    {/*<Buttons connect={connect} disconnect={disconnect} selectChatRoom={selectChatRoom} user={user} connected={connected} setUser={setUser} />*/}
+    {room === '' ? 
+      <RoomButtons selectChatRoom={selectChatRoom} /> :
+      <MessageDisplay room={room} setMessage={setMessage} messages={messages} message={message} sendMessage={sendMessage} />}
     </>
   );
 }
