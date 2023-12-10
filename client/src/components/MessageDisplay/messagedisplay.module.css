@@ -1,17 +1,21 @@
 .chatContainer {
-    border: solid green 3px;
-    border-color: red green blue yellow; /* red top, green right, blue bottom and yellow left */
     border-radius: 20px;
+    border: solid 10px;
+    /*border-color: red green blue yellow; /* red top, green right, blue bottom and yellow left */
+    border-color: rgba(120, 184, 240, 0.3) rgba(74, 127, 173, 0.3) rgba(40, 147, 240, 0.3) rgba(48, 98, 143, 0.3);
     margin: 5%;
-    max-width: 500px;
-    margin-left: 20%
-
+    min-width: 50vw;
+    min-height: 70vh;
+    margin-left: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .chatTitle {
     display: flex;
     justify-content: center;
-    border: solid blue 3px;
+    border: solid rgba(87, 166, 236, 0.05) 10px;
     /* border-radius: 80px 80px 30px 30px; */
     /* border-radius: 30% 20% 10% 30%; */
     border-top-left-radius: 3% 30%;
@@ -26,7 +30,54 @@
 .chatBox {
     display: flex;
     height: 50vh;
-    border: solid red 3px;
-    /* border-radius: 10% 10% / 10% 10%; */
+    border: solid rgba(87, 166, 236, 0.3) 3px;
+    border-radius: 10% 10% / 10% 10%; 
     border-radius: 5%;
+}
+
+ul {
+    list-style: none;
+    margin-left: 2%;
+}
+
+.sendForm {
+    margin: 5% 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/*.sendInput, .sendButton {
+    margin-top: 8%;
+    border-radius: 5%;
+    font-size: 20px;
+    font-weight: bolder;
+}*/
+.sendInput {
+    display:flex;
+    margin-top: 8%;
+    border-radius: 5%;
+    font-size: larger;
+    font-weight: bold;
+    padding: 10px;
+    border-color: rgba(157, 196, 230, 0.3);
+}
+
+.sendButton {
+    display:flex;
+    margin-top: 4px;
+    font-size:larger;
+    font-weight: bold;
+    padding: 10px 118px;
+    border-radius: 5%;
+    border-color: rgba(15, 92, 160, 0.3);
+    background-color: rgba(108, 173, 230, 0.6);
+    box-shadow: 5px 10px rgba(77, 136, 187, 0.2);
+    transition: all 0.1s;
+}
+
+.sendButton:hover {
+    background-color: rgba(108, 173, 230, 0.1);
+    box-shadow: 5px 10px rgba(96, 155, 207, 0.2);
 }

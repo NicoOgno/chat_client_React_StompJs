@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Client } from '@stomp/stompjs';
 import RoomButtons from '../RoomButtons/RoomButtons';
-import MessageDisplay from '../MessageDisplay/MessageDisplay';
+import ChatRoomUI from '../ChatRoomUI/ChatRoomUI';
+
 
 
 function ChatRoom({ user }) {
@@ -83,7 +84,8 @@ function ChatRoom({ user }) {
     {/*<Buttons connect={connect} disconnect={disconnect} selectChatRoom={selectChatRoom} user={user} connected={connected} setUser={setUser} />*/}
     {room === '' ? 
       <RoomButtons selectChatRoom={selectChatRoom} /> :
-      <MessageDisplay room={room} setMessage={setMessage} messages={messages} message={message} sendMessage={sendMessage} />}
+      <ChatRoomUI room={room} setMessage={setMessage} messages={messages} message={message} sendMessage={sendMessage} selectChatRoom={selectChatRoom} />}
+      {/*<MessageDisplay room={room} setMessage={setMessage} messages={messages} message={message} sendMessage={sendMessage} />*/}
     </>
   );
 }

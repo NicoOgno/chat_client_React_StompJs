@@ -19,17 +19,19 @@ const MessageDisplay = ({ room, setMessage, messages, message, sendMessage }) =>
             ))}
         </ul>
       </div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Message"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
-        <button onClick={sendMessage} >
-          Send
-        </button>
-      </form>
+      <div className={styles.sendForm}>
+        <form onSubmit={handleSubmit}>
+          <input className={styles.sendInput}
+            type="text"
+            placeholder="Message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <button className={styles.sendButton} onClick={sendMessage} >
+            Send
+          </button>
+        </form>
+      </div>
     </div>
     </div>
   )
