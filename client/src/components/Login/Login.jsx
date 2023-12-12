@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
+import styles from './login.module.css'
 
 
 const Login = ({ user, setUser}) => {
@@ -14,12 +15,13 @@ const Login = ({ user, setUser}) => {
     <>
       <form onSubmit={handleSubmit}>
           <input
+            className={styles.inputLogin}
             type="text"
             placeholder="User"
             value={user}
             onChange={(e) => setUser(e.target.value)}
           />
-          <button onClick={() => navigate('/chatpage')} >
+          <button onClick={() => navigate('/chatpage')} className={styles.buttonLogin} >
             Sign in
           </button>
       </form>

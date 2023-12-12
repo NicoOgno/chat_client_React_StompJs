@@ -1,0 +1,28 @@
+.roomsButtonContainer {
+    width: 100vw;
+    height: 100vh;
+   /* border: solid 5px  red ;*/
+}
+
+.buttonWrapper {
+    margin-top: 30%;
+    display: flex;
+    justify-content: space-around;
+    /*border: solid 5px green;*/
+}
+
+.roomButtons {
+    width: 20vw;
+    height: 20vh;
+    font-size: large;
+    font-weight: bold;
+    background-color: rgba(87, 166, 236, 0.3);
+    border-color: rgba(15, 92, 160, 0.3);
+    border-radius: 15px;
+    transition: all 0.1s;
+}
+
+.roomButtons:hover {
+background-color: rgba(108, 173, 230, 0.1);
+box-shadow: 1px 3px rgba(96, 155, 207, 0.2);
+}

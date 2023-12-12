@@ -14,12 +14,10 @@ const SideRoomButtons = ({ selectChatRoom }) => {
   ]
   return (
     <div className={styles.sideBtnsContainer}>
-      <ButtonGroup
-        orientation='vertical'
-        aria-label='vertical outlined button group'
-      >
-        {buttons}
-      </ButtonGroup>     
+      <button key='code' className={styles.sideRoomButtons}  onClick={() => selectChatRoom('Code') } >Code</button>
+      <button key='cooking' className={styles.sideRoomButtons}  onClick={() => selectChatRoom('Cooking') } >Cooking</button>
+      <button key='sports' className={styles.sideRoomButtons}  onClick={() => selectChatRoom('Sports') } >Sports</button>
+      <button key='nature' className={styles.sideRoomButtons}  onClick={() => selectChatRoom('Nature') } >Nature</button> 
     </div>
   )
 }

@@ -73,11 +73,11 @@ ul {
     border-radius: 5%;
     border-color: rgba(15, 92, 160, 0.3);
     background-color: rgba(108, 173, 230, 0.6);
-    box-shadow: 5px 10px rgba(77, 136, 187, 0.2);
-    transition: all 0.1s;
+    transition: all 0.5s;
 }
 
 .sendButton:hover {
     background-color: rgba(108, 173, 230, 0.1);
-    box-shadow: 5px 10px rgba(96, 155, 207, 0.2);
+    box-shadow: 3px 5px rgba(96, 155, 207, 0.2);
+    
 }
