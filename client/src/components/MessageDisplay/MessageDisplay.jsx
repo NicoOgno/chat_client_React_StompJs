@@ -1,8 +1,13 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import styles from './messagedisplay.module.css';
 
 const MessageDisplay = ({ room, setMessage, messages, message, sendMessage }) => {
-  
+  const ref = useRef(null);
+
+  useEffect(() => {
+    ref.current.focus();
+  }, [])
+
   const handleSubmit = (e) => {
     e.preventDefault();
   };
@@ -15,7 +20,7 @@ const MessageDisplay = ({ room, setMessage, messages, message, sendMessage }) =>
         <ul>
           {messages[room] &&
             messages[room].map((message, index) => (
-              <li key={index}>{message}</li>
+              <li key={index} >{message}</li>
             ))}
         </ul>
       </div>
@@ -24,6 +29,7 @@ const MessageDisplay = ({ room, setMessage, messages, message, sendMessage }) =>
           <input className={styles.sendInput}
             type="text"
             placeholder="Message"
+            ref={ref}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />

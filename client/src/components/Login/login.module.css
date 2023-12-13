@@ -1,3 +1,37 @@
-.inputLogin {}
+.formWrapper {
+    margin-top: 20%;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
-.buttonLogin {}
+.inputLogin {
+    display:flex;
+    margin-top: 8%;
+    border-radius: 5%;
+    font-size: larger;
+    font-weight: bold;
+    padding: 10px 18px;
+    border: solid 1px rgba(157, 196, 230, 0.3);
+    outline: none;
+}
+
+.buttonLogin {
+    display:flex;
+    margin-top: 40px;
+    font-size:larger;
+    font-weight: bold;
+    padding: 10px 118px;
+    border-radius: 5%;
+    border-color: rgba(15, 92, 160, 0.3);
+    background-color: rgba(108, 173, 230, 0.6);
+    transition: all 0.5s;
+}
+
+.buttonLogin:hover {
+    background-color: rgba(108, 173, 230, 0.1);
+    box-shadow: 3px 5px rgba(96, 155, 207, 0.2);
+    
+}
