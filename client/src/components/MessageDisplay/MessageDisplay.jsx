@@ -2,11 +2,11 @@ import React, { useEffect, useRef } from 'react'
 import styles from './messagedisplay.module.css';
 
 const MessageDisplay = ({ room, setMessage, messages, message, sendMessage }) => {
-  const ref = useRef(null);
+  const sendInputRef = useRef(null);
 
   useEffect(() => {
-    ref.current.focus();
-  }, [])
+    sendInputRef.current.focus();
+  }, [room])
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -29,7 +29,7 @@ const MessageDisplay = ({ room, setMessage, messages, message, sendMessage }) =>
           <input className={styles.sendInput}
             type="text"
             placeholder="Message"
-            ref={ref}
+            ref={sendInputRef}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />

@@ -1,16 +1,20 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { Client } from '@stomp/stompjs';
 import RoomButtons from '../RoomButtons/RoomButtons';
 import ChatRoomUI from '../ChatRoomUI/ChatRoomUI';
-import { chatRoomReducer, chatroomInitialState } from '../../reducers/chatRoomReducer';
-import { actionTypes } from '../../actions/chatRoomActions';
+
 
 
 function ChatRoom({ user }) {
-  const [state, dispatch] = useReducer(chatRoomReducer, chatroomInitialState);
-  const { stompClient, connected, room, roomsSuscribed, message, messages } = state;
-
+  // Estados para el componente
+  const [stompClient, setStompClient] = useState(null); // Cliente STOMP
+  const [connected, setConnected] = useState(false); // Indica si el usuario está conectado
+  const [room, setRoom] = useState(''); // Sala actual
+  const [roomsSuscribed, setRoomsSuscribed] = useState([]); // Salas a las que está suscrito
+  const [message, setMessage] = useState(''); // Mensaje a enviar
+  const [messages, setMessages] = useState({}); // Almacena los mensajes por sala
   
+
   useEffect(() => {
     // Crea una instancia del cliente STOMP
     if (!stompClient) {
@@ -20,7 +24,7 @@ function ChatRoom({ user }) {
 
     // Configura manejadores de eventos para el cliente STOMP
     stomp.onConnect = (frame) => {
-      dispatch({ type: actionTypes.SET_CONNECTED, payload: true }); // Establece la conexión como exitosa
+      setConnected(true); // Establece la conexión como exitosa
       console.log('Connected: ' + frame);
     };
 
@@ -34,12 +38,11 @@ function ChatRoom({ user }) {
     };
 
     // Almacena la instancia del cliente STOMP en el estado
-    dispatch({ type: actionTypes.SET_STOMP_CLIENT, payload: stomp });
+    setStompClient(stomp);
     stomp.activate();
   }
-  }, [stompClient]);
+  }, [room]);
 
-  // Función para enviar un mensaje
   const sendMessage = () => {
     if (connected) {
       stompClient.publish({
@@ -49,7 +52,7 @@ function ChatRoom({ user }) {
           user: user,
         }),
       });
-      dispatch({ type: actionTypes.SET_MESSAGE, payload: '' }); // Elimina el texto del mensaje luego de enviar el mensaje
+      setMessage(""); // Elimina el texto del mensaje luego de enviar el mensaje
     } else {
       console.error("No hay una conexión STOMP establecida.");
     }
@@ -57,34 +60,27 @@ function ChatRoom({ user }) {
 
   // Función para mostrar un mensaje y agregarlo al estado
   const showMessage = (message, room) => {
-    dispatch({ type: actionTypes.ADD_MESSAGE, payload: { room, message } });
+    setMessages((prevMessages) => ({
+      ...prevMessages,
+      [room]: [...(prevMessages[room] || []), message],
+    }));
   };
 
-  // Función para seleccionar sala
   const selectChatRoom = (room) => {
     if (!roomsSuscribed.includes(room)) { // Condicional para evitar multiple suscripción a la misma sala
-      dispatch({ type: actionTypes.ADD_ROOM, payload: room });
+      setRoomsSuscribed([...roomsSuscribed, room])
       stompClient.subscribe('/topic/' + room, (message) => {
         showMessage(JSON.parse(message.body).content, room);
       });
     }
-    dispatch({ type: actionTypes.SET_ROOM, payload: room });
+    setRoom(room);
   }
 
-  const setMessage = newMessage => dispatch({ type: actionTypes.SET_MESSAGE, payload: newMessage });
-
-  // Renderizado del componente
   return (
     <>
     {room === '' ? 
       <RoomButtons selectChatRoom={selectChatRoom} /> :
-      <ChatRoomUI
-        room={room}
-        setMessage={setMessage}
-        messages={messages}
-        message={message}
-        sendMessage={sendMessage}
-        selectChatRoom={selectChatRoom} />}
+      <ChatRoomUI room={room} setMessage={setMessage} messages={messages} message={message} sendMessage={sendMessage} selectChatRoom={selectChatRoom} />}
     </>
   );
 }

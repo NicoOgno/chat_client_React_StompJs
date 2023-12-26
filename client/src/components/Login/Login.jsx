@@ -5,10 +5,10 @@ import styles from './login.module.css'
 
 const Login = ({ user, setUser}) => {
     const navigate = useNavigate();
-    const ref = useRef(null);
+    const userInputRef = useRef(null);
 
     useEffect(() => {
-      ref.current.focus();
+      userInputRef.current.focus();
     }, [])
 
       const handleSubmit = (e) => {
@@ -24,7 +24,7 @@ const Login = ({ user, setUser}) => {
               className={styles.inputLogin}
               type="text"
               placeholder="User"
-              ref={ref}
+              ref={userInputRef}
               value={user}
               onChange={(e) => setUser(e.target.value)}
             />
